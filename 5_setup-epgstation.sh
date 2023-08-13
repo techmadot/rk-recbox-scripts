@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash 
+curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash 
 sudo apt install -y ffmpeg nodejs
 sudo npm install -g pm2
 sudo pm2 startup
@@ -63,7 +63,7 @@ mkdir -p /home/$USER/EPGStation/drop
 
 ### 録画ファイルの格納先
 sudo mkdir -p /record-data
-sudo chown $USER /record-data
+sudo chown $USER:$USER /record-data
 
 ## EPGStationをPM2の自動起動へ登録
 pm2 start dist/index.js --name "EPGStation"

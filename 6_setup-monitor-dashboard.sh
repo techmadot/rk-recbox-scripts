@@ -21,9 +21,29 @@ sleep 15
 
 ## Grafana の DataSource 設定
 echo "Register DataSource"
-curl -X POST -H "Content-Type: application/json" --user $GRAFANA_ACCOUNT \
-  -d '{"id":1,"uid":"ua5Bfsl4k","orgId":1,"name":"InfluxDB","type":"influxdb","typeName":"InfluxDB","typeLogoUrl":"public/app/plugins/datasource/influxdb/img/influxdb_logo.svg","access":"proxy","url":"http://influxdb:8086","user":"","database":"","basicAuth":false,"isDefault":true,"jsonData":{"defaultBucket":"mybucket","httpMode":"POST","organization":"myorgs","version":"Flux"},"readOnly":false}' \
-  http://localhost:8090/api/datasources/
+DATASOURCE_CONFIG=$(cat <<EOS
+{
+  "name":"InfluxDB",
+  "type":"influxdb",
+  "access":"proxy",
+  "url":"http://influxdb:8086",
+  "isDefault":true,
+  "jsonData":{
+    "defaultBucket":"mybucket",
+    "httpMode":"POST",
+    "organization":"myorgs",
+    "version":"Flux"
+  },
+  "secureJsonData" : {
+    "token": "my-recmachine-token"
+  },
+  "readOnly":false
+}
+EOS
+)
+curl -X POST -H "Content-Type: application/json" \
+  --user $GRAFANA_ACCOUNT \
+  -d $DATASOURCE_CONFIG http://localhost:8090/api/datasources/
 
 ## Grafana のダッシュボード設定
 cd ../misc
