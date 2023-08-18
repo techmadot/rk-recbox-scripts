@@ -41,15 +41,19 @@ DATASOURCE_CONFIG=$(cat <<EOS
 }
 EOS
 )
-curl -X POST -H "Content-Type: application/json" \
+
+GRAFANA_URL=http://localhost:8090
+MIME="Content-Type: application/json"
+
+curl -X POST -H "$MIME" \
   --user $GRAFANA_ACCOUNT \
-  -d $DATASOURCE_CONFIG http://localhost:8090/api/datasources/
+  -d "$DATASOURCE_CONFIG" $GRAFANA_URL/api/datasources/
 
 ## Grafana のダッシュボード設定
 cd ../misc
 echo 
 echo "Register Dashboard"
-jq '{ "dashboard": . }' dashboard.json | curl -X POST -H "Content-Type: application/json" \
-  --user $GRAFANA_ACCOUNT http://localhost:8090/api/dashboards/db -d @-
+jq '{ "dashboard": . }' dashboard.json | curl -X POST -H "$MIME" \
+  --user $GRAFANA_ACCOUNT $GRAFANA_URL/api/dashboards/db -d @-
 
 echo "Monitoring Dashboard Setup Finished."

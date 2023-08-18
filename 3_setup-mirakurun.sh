@@ -23,6 +23,7 @@ enableDevice /dev/px4video2
 enableDevice /dev/px4video3
 enableDevice /dev/isdb2056video0
 enableDevice /dev/pxm1urvideo0
+enableDevice /dev/pxs1urvideo0
 enableDevice /dev/dvb
 
 echo "Finished"
