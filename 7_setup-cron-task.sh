@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-GITHUB_REPO_URL=https://github.com/techmadot/rk3588-env
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
 prepareEncodeTask()
 {
@@ -13,7 +13,7 @@ EOS
   sudo chown root:root /tmp/task-encode
   sudo mv /tmp/task-encode /etc/cron.d/task-encode
 
-  sudo wget -O /usr/local/bin/enqueue_enc.js $GITHUB_REPO_URL/raw/main/scripts/enqueue_enc.js
+  sudo cp $SCRIPT_DIR/cron-tasks/enqueue_enc.js /usr/local/bin/enqueue_enc.js
 }
 
 prepareRebootTask()
@@ -27,8 +27,8 @@ EOS
   sudo chown root:root /tmp/task-reboot
   sudo mv /tmp/task-reboot /etc/cron.d/task-reboot
 
-  sudo wget -O /usr/local/sbin/system_reboot.sh $GITHUB_REPO_URL/raw/main/scripts/reboot_sys.sh
-  sudo chmod +x /usr/local/sbin/system_reboot.sh
+  chmod +x $SCRIPT_DIR/cron-tasks/system_reboot.sh
+  sudo cp $SCRIPT_DIR/cron-tasks/system_reboot.sh /usr/local/sbin/system_reboot.sh
 }
 
 while [ $# -gt 0 ]; do
