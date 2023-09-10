@@ -37,7 +37,7 @@ rm -r $DOWNLOAD_DEBDIR
 # Build rkmppenc
 pushd .
 RKMPPENC_CLONEDIR=/tmp/rkmppenc
-git clone --recursive -b 0.01 https://github.com/rigaya/rkmppenc $RKMPPENC_CLONEDIR
+git clone --recursive -b 0.03 https://github.com/rigaya/rkmppenc $RKMPPENC_CLONEDIR
 cd $RKMPPENC_CLONEDIR
 ./configure
 make -j4
