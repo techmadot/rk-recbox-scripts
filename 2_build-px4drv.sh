@@ -1,23 +1,6 @@
 #!/bin/bash
 set -e
 
-## Orange Pi 5
-##   Orangepi5 1.1.6ubuntu jammy server 5.10.110
-##   -> rockchip,rk3588s-orangepi-5rockchip,rk3588
-##   Armbian_23.5.1 (download)
-##   -> kernel-headers インストール無し
-##   -> rockchip,rk3588s-orangepi-5rockchip,rk3588
-# armbian-config
-## Software -> Headers_install
-## --> linux-headers-legacy-rockchip-rk3588 インストールする.
-# orangepi-config
-## ※ 同じように headers_install が可能か？
-
-## OS のリスト
-## OrangePi5: Armbian_23.02.2_Orangepi5_jammy_legacy_5.10.110 (使用)
-
-
-
 KERNEL_HEADER_DIR=linux-headers-$(uname -r)
 GITHUB_CONTENT_BASE_URL=https://raw.githubusercontent.com/torvalds/linux/v5.10
 
@@ -27,11 +10,11 @@ echo $SOC_NAME
 
 sudo apt update
 sudo apt install -y --no-install-recommends python2
-sudo apt install --allow-change-held-packages -y linux-headers-legacy-rockchip-rk3588
 
 OS_TYPE=default
 if [ -f /etc/armbian-release ]; then
   OS_TYPE=armbian
+  sudo apt install --allow-change-held-packages -y linux-headers-legacy-rockchip-rk3588
   if [ ! -d /usr/src/$KERNEL_HEADER_DIR ]; then
     ## 合っているものが存在していないので自動処理は無理.
     echo "mismatch Kernel header version."
@@ -39,6 +22,10 @@ if [ -f /etc/armbian-release ]; then
     echo "src headers: $(ls /usr/src)"
     exit
   fi
+fi
+if [ -f /etc/orangepi-release ]; then
+  OS_VERSION=$(cat /etc/orangepi-release | grep VERSION= | cut -d'=' -f2)
+  sudo apt install --allow-change-held-packages -y /opt/linux-headers-legacy-rockchip-rk3588_${OS_VERSION}_arm64.deb
 fi
 
 ## module.lds がないなら生成処理
