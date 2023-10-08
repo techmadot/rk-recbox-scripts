@@ -13,15 +13,15 @@ sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -
 
 ## EPGStationに必要なMySQLの準備
 cd $HOME
-mkdir -p docker-mysql
-cd docker-mysql
+mkdir -p docker-epgstation-db
+cd docker-epgstation-db
 cat << EOS > docker-compose.yml
 version: "3.7"
 services:
-  mysql:
+  docker-epgstation-db:
     image: mariadb:10.4
     volumes:
-      - epg-mysql-db:/var/lib/mysql
+      - mariadb-volume:/var/lib/mysql
     ports:
       - "3306:3306"
     environment:
@@ -37,7 +37,7 @@ services:
         max-file: "3"
     restart: always
 volumes:
-  epg-mysql-db:
+  mariadb-volume:
     driver: local
 EOS
 ### 起動開始

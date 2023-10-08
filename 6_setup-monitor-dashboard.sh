@@ -13,7 +13,7 @@ docker compose up -d
 
 ## 状態チェックスクリプトを開始.
 cd host_app
-./setup.sh $USER
+./setup.sh
 
 ## Grafana 起動完了までの待機.
 echo "Wait for grafana startup"
@@ -53,7 +53,7 @@ curl -X POST -H "$MIME" \
 cd ../misc
 echo 
 echo "Register Dashboard"
-jq '{ "dashboard": . }' dashboard.json | curl -X POST -H "$MIME" \
+jq '{ "dashboard": . }' dashboard_auto.json | curl -X POST -H "$MIME" \
   --user $GRAFANA_ACCOUNT $GRAFANA_URL/api/dashboards/db -d @-
 
 echo "Monitoring Dashboard Setup Finished."
